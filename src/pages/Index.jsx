@@ -1,7 +1,11 @@
 import { Box, Container, Flex, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import { useClasses, useStudents } from "../integrations/supabase/index.js";
 
 const Index = () => {
+  const { data: classes, isLoading: classesLoading, error: classesError } = useClasses();
+  const { data: students, isLoading: studentsLoading, error: studentsError } = useStudents();
+
   return (
     <Container maxW="container.xl" p={0}>
       <Flex as="nav" bg="blue.600" color="white" p={4} justifyContent="space-between" alignItems="center">
@@ -18,11 +22,23 @@ const Index = () => {
           <Text>This is your dashboard where you can track your classes and students.</Text>
           <Box bg="gray.100" p={4} borderRadius="md">
             <Heading as="h3" size="sm">Classes Overview</Heading>
-            <Text>No classes available. Please add some classes.</Text>
+            {classesLoading ? (
+              <Text>Loading classes...</Text>
+            ) : classesError ? (
+              <Text>Error loading classes: {classesError.message}</Text>
+            ) : (
+              <Text>{classes.length > 0 ? `You have ${classes.length} classes.` : "No classes available. Please add some classes."}</Text>
+            )}
           </Box>
           <Box bg="gray.100" p={4} borderRadius="md">
             <Heading as="h3" size="sm">Students Overview</Heading>
-            <Text>No students available. Please add some students.</Text>
+            {studentsLoading ? (
+              <Text>Loading students...</Text>
+            ) : studentsError ? (
+              <Text>Error loading students: {studentsError.message}</Text>
+            ) : (
+              <Text>{students.length > 0 ? `You have ${students.length} students.` : "No students available. Please add some students."}</Text>
+            )}
           </Box>
         </VStack>
       </Box>
