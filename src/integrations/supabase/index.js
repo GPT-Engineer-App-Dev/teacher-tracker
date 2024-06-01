@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { SupabaseAuthProvider } from './auth.jsx';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_PROJECT_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
@@ -129,3 +130,5 @@ export const useAddClassStudent = () => {
         },
     });
 };
+
+export { SupabaseAuthProvider as SupabaseProvider };
